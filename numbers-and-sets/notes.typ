@@ -289,7 +289,7 @@
 
     Why does $9040 times 40099 != 6701 times 54151$
   ]
-  #proposition[If $p$ is prime and $p divides a b$ then $p divides a$ or $p divides b$. ] <prop:prime2>
+  #proposition[Euclid's Lemma][If $p$ is prime and $p divides a b$ then $p divides a$ or $p divides b$. ] <prop:prime2>
 
   To prove @prop:prime2 we need more tools.
 
@@ -350,7 +350,7 @@
 
   Observe that the algorithm will terminate in $n<b$ steps since $b>r_1>r_2>...>r_n>0$
 
-  #theorem[The output of Euclid's Algorithm with input $a,b$ is $h c f (a,b)$ ] <thm:>
+  #theorem[The output of Euclid's Algorithm with input $a,b$ is $h c f (a,b)$ ]
   #proof[
     + Have $r_n divides r_(n-1)$ as $r_(n+1)=0$. So $r_n divides r_(n-2)$ so $r_n divides r_i, forall i = 1,2,dots,n-1$ (inductively).
 
@@ -366,6 +366,56 @@
   $ 52=1*35+17 $
   $ 35 = 2*17 +1 $
   $ 17 = 17 times 1 $
-  So $h c f(87,52)=1$ ] <exa:>
+  So $h c f(87,52)=1$ ]
+
+  When $h c f(a,b) = 1$ then we say $a$ and $b$ are *#underline[coprime]*.
+
+  Also observe that we can reverse Euclids Algorith:
+  #example-box[$ 1 & = 35-2 times 17                        \
+      & = 35-2times (52 - 1 times 35)          \
+      & =-2 times 52 + 3 times 35              \
+      & =-2 times 52+3 times (87 - 1 times 52) \
+      & =-5 times 52 +3 times 87 $ ]
+
+  #theorem[Bezout's Identity][$forall a,b in NN, exists x,y in ZZ space s.t. space x a+y b = h c f(a,b)$
+
+  i.e. We can write $h c f (a,b)$ as a linear combination of a and b ] <thm:bezoutsIdentity>
+  #proof[Proof: 1][Run Euclid's Algorithmm with input $a,b$ to obtain an output $r_n$, at step $n$ we have
+
+  $r_n=x r_(n-1) + y r_(n-2)$, for some $x,y in ZZ$. But from Step $n-1$ we see that $r_(n+1)$ is expressible as $r_(n-1) = x r_(n-2)+y r_(n-3)$ for some $x,y in ZZ$ continuing inductively we have $forall i = 2,3,dots,n-1 r_n = x r_(i)+ y r_(i-1)$ for some $x,y in ZZ$ thus $r_n = x a + y b$ for some $x,y, in ZZ$ (by steps 1 and 2). ]
+  #remark-block[Euclid's algorithm not only proves the existence of $x,y in ZZ$ but also gives a relatively quick and easy way to find them.]
+  #proof[Proof 2][let $h$ be the least positive linear combination of $a,b$ i.e. the least positive integer of the form $x a +y b$ for some $x,y in ZZ$
+
+  We shall show that $h = h c f (a,b)$. To see (ii) of the definition observe that given $d in NN, space s.t. d divides a$ and $d divides b$, we have $d divides a x + y b space forall x,y in ZZ$ so $d divides h$.
+
+  To see (i) of the definition, suppose $h divides.not a$ then by the division algorithm, we can write $a = q h +r$ for some $q,r in ZZ$ with $0 < r < h$. Hence $r = a -q h = a -q(x a + y b) = (1-q x)a - q b y$. Which is also a linear combination of $a$ and $b$, and strictly smaller that $h$, contradicting the definition of $h$. Therefor $h divides a$ and by a similar argument, $h divides b$ hence by definition $h = h c f (a,b).$ ]
+  #remark-block[Proof 2 tells us that the $h c f$ can be written using a linear combination of $a$ and $b$, but it gives no way to find $h c f(a,b)$ or the coefficients $x,y in ZZ$. ]
+
+  === Bezout's Theorem
+  Does $160x + 72y = 33$ have integer solutions?
+  - No as $L H S$ is even and $R H S$ is odd.
+  #corollary[Bezout's Theorem][Let $a,b in NN$ then the equation $a x + b y = c$ has integer solutions if and only if $h c f (a,b) divides c$. ]
+  #proof[($==>$) Let $h = h c f(a,b)$. Suppose there are $x,y in ZZ space s.t. a x + b y = c$ then since $h divides a$ and $h divides b$ then also $h divides c$.
+
+  ($<==$) Conversely suppose $h divides c$. Then by @thm:bezoutsIdentity, $exists x`,y` in ZZ space s.t. space a x`+b y` = h$. Also $ c = frac(c, h)h = frac(c, h)(a x`+b y`)= a frac(c x`, h) + b frac(c y`, h) = c $ ]
+
+  === Fundamental theorem of Algebra
+  #theorion-restate(filter: <prop:prime2>)
+  #proof[Suppose $p divides a b$ but $p divides.not a$, so then $h c f (a,p) = 1$. Thus by theorem 7 $exists x,y in ZZ space s.t. space x p + y a = 1$. It follows $x b p + y a b = b$ whence $b$ is a multiple $p$. ]
+
+  #remark-block[ //
+    + Similarly if $p divides a_1, dots, a_n$ then $p divides a_i$ for some $i = 1,2,dots, n$.
+
+      Indeed @prop:prime2 tells us if $p divides a_1,a_2,dots, a_n$ then $p divides a_1,a_2,dots,a_(n-1)$ or $p divides a_n$ and so on inductively
+    + Also for @prop:prime2 to hold we *need* $p$ to be a prime.
+  ]
+  #theorem[Fundamental Theorem of Algebra][Every natural number $n >= 2$ is expressible as a product of primes, uniquely up to reordering.] <thm:>
+  #proof[The existence of this factorisation comes from @prop:prime1. Now we will use induction to prove uniqueness.
+  - Base case: True for $n=2$ (as it is prime)
+  - Given $n>2$. Suppose n is prime then true.
+    Otherwise it is composite and let $n = p_1p_2dots p_k = q_1q_2dots q_k$ where $p_i,q_j$ are all prime.
+    WTP: $k = l$ and after reordering $p_i=q_i, forall i = 1,2,dots,k$.
+
+    It follows $p_1 divides n = q_1dots q_l$, so by @prop:prime2, $p_1 divides q_i$ for some $i$. Relabelling $q_j$, we have $p_1=q_1$, so $ n / p_1 = p_2 dots p_k = q_2 dots q_k < n $ By the induction hypothesis, $k = l$ and after reordering $p_2 =q_2, dots, p_k=q_k$] <prf:>
 
 ]
